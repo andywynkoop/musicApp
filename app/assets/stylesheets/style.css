@@ -1,0 +1,42 @@
+body {
+  background: url("https://cdn.pixabay.com/photo/2017/11/01/18/17/background-2908901_960_720.jpg");
+  background-repeat: repeat-y;
+  background-size: cover;
+  font-family: sans-serif;
+  padding: 20px;
+  
+}
+
+h1, h2, h3 {
+  text-shadow: 0px 0px 2px #aaf;
+  color: #22f;
+}
+
+button {
+  background: #fff;
+  border: none;
+  border-radius: 3px;
+  height: 20px;
+  margin: 0px 5px;
+  box-sizing: border-box;
+}
+
+input {
+  border: none;
+  border-radius: 3px;
+  height: 20px;
+  padding: 0px 5px;
+  box-sizing: border-box;
+}
+
+.songs {
+  display: flex;
+}
+
+.song {
+  background-color: rgba(50, 50, 50, .5);
+  color: white;
+  margin: 5px;
+  padding: 10px;
+  border-radius: 3px;
+}
