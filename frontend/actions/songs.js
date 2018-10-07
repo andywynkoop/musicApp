@@ -7,8 +7,17 @@ export const fetchSongs = () => dispatch =>
 
 export const receiveSongs = songs => ({ type: RECEIVE_SONGS, songs });
 
-export const createSong = song => dispatch => 
-  $.ajax({ method: 'post', url: '/api/songs', data: { song }})
+const createSongAjax = formData => 
+  $.ajax({ 
+    method: 'post', 
+    url: '/api/songs', 
+    data: formData,
+    contentType: false,
+    processData: false
+  });
+
+export const createSong = formData => dispatch => 
+  createSongAjax(formData)
     .then(song => dispatch(receiveSong(song)));
 
 export const receiveSong = song => ({ type: RECEIVE_SONG, song });

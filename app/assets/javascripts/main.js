@@ -256,13 +256,64 @@ var mdtp = function mdtp(dispatch) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-/* harmony default export */ __webpack_exports__["default"] = (function (_ref) {
-  var name = _ref.data.name;
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "song"
-  }, name);
-});
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+var Song =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Song, _Component);
+
+  function Song() {
+    _classCallCheck(this, Song);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(Song).apply(this, arguments));
+  }
+
+  _createClass(Song, [{
+    key: "render",
+    value: function render() {
+      var _this$props$data = this.props.data,
+          name = _this$props$data.name,
+          audio = _this$props$data.audio,
+          photos = _this$props$data.photos;
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "song"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("audio", {
+        controls: true
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("source", {
+        src: audio,
+        type: "audio/mpeg"
+      })), photos.map(function (photo) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+          key: Math.random(),
+          src: photo
+        });
+      })));
+    }
+  }]);
+
+  return Song;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+/* harmony default export */ __webpack_exports__["default"] = (Song);
 
 /***/ }),
 
@@ -315,9 +366,13 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(SongForm).call(this, props));
     _this.state = {
-      name: ""
+      name: "",
+      audio: ""
     };
+    _this.audio = react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef();
     _this.save = _this.save.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.audioUpload = _this.audioUpload.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.photoUpload = _this.photoUpload.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
   }
 
@@ -331,26 +386,66 @@ function (_Component) {
       };
     }
   }, {
+    key: "audioUpload",
+    value: function audioUpload(e) {
+      var file = e.target.files[0];
+      this.setState({
+        audio: file
+      });
+    }
+  }, {
+    key: "photoUpload",
+    value: function photoUpload(e) {
+      var photos = e.target.files;
+      this.setState({
+        photos: photos
+      });
+    }
+  }, {
     key: "save",
     value: function save() {
       var _this3 = this;
 
-      var song = Object.assign({}, this.state);
+      var song = new FormData();
+      var _this$state = this.state,
+          name = _this$state.name,
+          audio = _this$state.audio,
+          photos = _this$state.photos;
+      song.append('song[name]', name);
+      if (audio) song.append('song[audio]', audio);
+
+      if (photos) {
+        for (var i = 0; i < photos.length; i++) {
+          song.append('song[photos][]', photos[i]);
+        }
+      }
+
       this.props.save(song).then(function () {
         return _this3.setState({
-          name: ''
+          name: '',
+          audio: ''
+        }, function () {
+          return _this3.audio.current.value = "";
         });
       });
     }
   }, {
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Name:", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "text",
         value: this.state.name,
         onChange: this.update('name'),
         placeholder: "Enter Song Name"
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Audio File:", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        type: "file",
+        ref: this.audio,
+        onChange: this.audioUpload
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Photos:", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        type: "file",
+        onChange: this.photoUpload,
+        multiple: true
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         onClick: this.save
       }, "Save"));
     }
@@ -404,15 +499,20 @@ var receiveSongs = function receiveSongs(songs) {
     songs: songs
   };
 };
-var createSong = function createSong(song) {
+
+var createSongAjax = function createSongAjax(formData) {
+  return $.ajax({
+    method: 'post',
+    url: '/api/songs',
+    data: formData,
+    contentType: false,
+    processData: false
+  });
+};
+
+var createSong = function createSong(formData) {
   return function (dispatch) {
-    return $.ajax({
-      method: 'post',
-      url: '/api/songs',
-      data: {
-        song: song
-      }
-    }).then(function (song) {
+    return createSongAjax(formData).then(function (song) {
       return dispatch(receiveSong(song));
     });
   };
